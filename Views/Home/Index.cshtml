@@ -1,0 +1,126 @@
+﻿@model List<TechStoreMVC.Models.Producto>
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="inicio-techstore">
+    <div class="contenido-inicio">
+        <p class="etiqueta-inicio">TECNOLOGÍA A TU ALCANCE</p>
+
+        <h1>Bienvenido a <span>TechStore</span></h1>
+
+        <p class="descripcion-inicio">
+            Encuentra los accesorios de computación que necesitas.
+            Explora nuestro catálogo y descubre productos para tu
+            computadora, espacio de trabajo y entretenimiento.
+        </p>
+
+        <a href="#productos" class="boton-inicio">
+            Explorar productos
+        </a>
+    </div>
+
+    <div class="icono-inicio">
+        <span>💻</span>
+    </div>
+</section>
+
+<section id="productos" class="seccion-productos">
+    <h2>Nuestros productos</h2>
+
+    <p>Explora nuestro catálogo de accesorios de computación.</p>
+
+    <div class="barra-carrito">
+        <span id="cantidadCarrito">0 productos en el carrito</span>
+
+        <button type="button" id="abrirCarrito" class="boton-carrito">
+            🛒 Ver carrito
+        </button>
+    </div>
+
+    <div class="catalogo-controles">
+        <input type="text"
+               id="buscador"
+               class="form-control"
+               placeholder="Buscar productos..." />
+
+        <select id="filtroCategoria" class="form-select">
+            <option value="">Todas las categorías</option>
+
+            @foreach (var categoria in Model.Select(p => p.Categoria).Distinct())
+            {
+                <option value="@categoria">@categoria</option>
+            }
+        </select>
+    </div>
+
+    <p id="contador" class="contador-productos">
+        @Model.Count productos encontrados
+    </p>
+
+    <div id="listaProductos" class="catalogo-productos">
+        @foreach (var producto in Model)
+        {
+            <article class="tarjeta-producto"
+                     data-id="@producto.IdProducto"
+                     data-nombre="@producto.Nombre"
+                     data-categoria="@producto.Categoria"
+                     data-precio="@producto.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+
+                <div class="producto-icono">
+                    @producto.Icono
+                </div>
+
+                <p class="producto-categoria">
+                    @producto.Categoria
+                </p>
+
+                <h3>@producto.Nombre</h3>
+
+                <p class="producto-descripcion">
+                    @producto.Descripcion
+                </p>
+
+                <p class="producto-precio">
+                    @producto.Precio.ToString(
+                        "C2",
+                        System.Globalization.CultureInfo.GetCultureInfo("es-MX"))
+                </p>
+            </article>
+        }
+    </div>
+
+    <p id="mensajeVacio" class="mensaje-vacio" hidden>
+        No se encontraron productos.
+    </p>
+</section>
+
+<section id="seccionCarrito" class="seccion-carrito" hidden>
+    <div class="encabezado-carrito">
+        <h2>Tu carrito de compras</h2>
+
+        <button type="button"
+                id="cerrarCarrito"
+                class="boton-secundario">
+            Seguir comprando
+        </button>
+    </div>
+
+    <div id="listaCarrito"></div>
+
+    <p id="carritoVacio">Tu carrito está vacío.</p>
+
+    <div class="resumen-carrito">
+        <p>
+            Total:
+            <strong id="totalCarrito">$0.00</strong>
+        </p>
+
+        <button type="button"
+                id="vaciarCarrito"
+                class="boton-secundario">
+            Vaciar carrito
+        </button>
+    </div>
+</section>
