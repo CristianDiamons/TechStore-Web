@@ -1,0 +1,93 @@
+@model TechStoreMVC.Models.RegistroViewModel
+
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<div class="login-contenedor">
+    <div class="login-tarjeta">
+
+        <div class="login-encabezado">
+            <div class="login-icono">👤</div>
+            <h1>Crear cuenta</h1>
+            <p>Regístrate para disfrutar de TechStore.</p>
+        </div>
+
+        <form asp-controller="Account"
+              asp-action="Registro"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="mensaje-error"></div>
+
+            <div class="campo-admin">
+                <label asp-for="Nombre"></label>
+
+                <input asp-for="Nombre"
+                       placeholder="Ingresa tu nombre completo"
+                       autocomplete="name" />
+
+                <span asp-validation-for="Nombre"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Correo"></label>
+
+                <input asp-for="Correo"
+                       type="email"
+                       placeholder="ejemplo@correo.com"
+                       autocomplete="email" />
+
+                <span asp-validation-for="Correo"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Contrasena"></label>
+
+                <input asp-for="Contrasena"
+                       placeholder="Mínimo 8 caracteres"
+                       autocomplete="new-password" />
+
+                <span asp-validation-for="Contrasena"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="ConfirmarContrasena"></label>
+
+                <input asp-for="ConfirmarContrasena"
+                       placeholder="Repite tu contraseña"
+                       autocomplete="new-password" />
+
+                <span asp-validation-for="ConfirmarContrasena"
+                      class="mensaje-error"></span>
+            </div>
+
+            <button type="submit" class="login-boton">
+                Crear cuenta
+            </button>
+        </form>
+
+        <div class="registro-enlace">
+            <p>¿Ya tienes una cuenta?</p>
+            <a asp-controller="Account" asp-action="Login">
+                Inicia sesión
+            </a>
+        </div>
+
+        <div class="login-regresar">
+            <a asp-controller="Home" asp-action="Index">
+                ← Volver a la tienda
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

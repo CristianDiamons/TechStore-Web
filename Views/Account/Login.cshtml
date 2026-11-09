@@ -1,0 +1,89 @@
+@model TechStoreMVC.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="login-contenedor">
+    <div class="login-tarjeta">
+
+        <div class="login-encabezado">
+            <div class="login-icono">🔐</div>
+            <h1>Bienvenido a TechStore</h1>
+            <p>Ingresa a tu cuenta para continuar.</p>
+        </div>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="admin-mensaje">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <form asp-controller="Account"
+              asp-action="Login"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="mensaje-error"></div>
+
+            <div class="campo-admin">
+                <label asp-for="Usuario">
+                    Usuario o correo electrónico
+                </label>
+
+                <input asp-for="Usuario"
+                       placeholder="Ingresa tu usuario o correo electrónico"
+                       autocomplete="username" />
+
+                <span asp-validation-for="Usuario"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Contrasena">
+                    Contraseña
+                </label>
+
+                <input asp-for="Contrasena"
+                       placeholder="Ingresa tu contraseña"
+                       autocomplete="current-password" />
+
+                <span asp-validation-for="Contrasena"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="login-recordarme">
+                <input asp-for="Recordarme" />
+                <label asp-for="Recordarme">
+                    Recordarme
+                </label>
+            </div>
+
+            <button type="submit" class="login-boton">
+                Iniciar sesión
+            </button>
+        </form>
+
+        <div class="registro-enlace">
+            <p>¿Todavía no tienes una cuenta?</p>
+
+            <a asp-controller="Account" asp-action="Registro">
+                Regístrate aquí
+            </a>
+        </div>
+
+        <div class="login-regresar">
+            <a asp-controller="Home" asp-action="Index">
+                ← Volver a la tienda
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

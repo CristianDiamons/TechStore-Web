@@ -1,0 +1,59 @@
+@model TechStoreMVC.Models.Producto
+
+@{
+    ViewData["Title"] = "Detalles del producto";
+}
+
+<div class="admin-formulario-contenedor">
+    <div class="admin-formulario">
+        <div class="admin-formulario-encabezado">
+            <h1>Detalles del producto</h1>
+            <p>Información completa del producto seleccionado.</p>
+        </div>
+
+        <div class="admin-detalle-producto">
+            @if (!string.IsNullOrEmpty(Model.Imagen))
+            {
+                <img
+                    src="@Url.Content("~/images/" + Model.Imagen)"
+                    alt="@Model.Nombre"
+                    class="admin-detalle-imagen" />
+            }
+            else
+            {
+                <div class="admin-detalle-icono">
+                    @(string.IsNullOrEmpty(Model.Icono) ? "📦" : Model.Icono)
+                </div>
+            }
+
+            <div class="admin-detalle-informacion">
+                <span class="admin-detalle-etiqueta">ID del producto</span>
+                <p>@Model.IdProducto</p>
+
+                <span class="admin-detalle-etiqueta">Nombre</span>
+                <p>@Model.Nombre</p>
+
+                <span class="admin-detalle-etiqueta">Descripción</span>
+                <p>@(string.IsNullOrWhiteSpace(Model.Descripcion) ? "Sin descripción" : Model.Descripcion)</p>
+
+                <span class="admin-detalle-etiqueta">Categoría</span>
+                <p>@Model.Categoria</p>
+
+                <span class="admin-detalle-etiqueta">Precio</span>
+                <p class="admin-precio">@Model.Precio.ToString("C2")</p>
+            </div>
+        </div>
+
+        <div class="admin-formulario-botones">
+            <a asp-action="Edit"
+               asp-route-id="@Model.IdProducto"
+               class="admin-boton-principal">
+                Editar producto
+            </a>
+
+            <a asp-action="Index" class="admin-boton-cancelar">
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>

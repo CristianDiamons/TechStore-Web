@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TechStoreMVC.Models;
@@ -13,6 +14,7 @@ public class HomeController : Controller
         this.productoDatos = productoDatos;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         List<Producto> productos = await productoDatos.ObtenerProductos();

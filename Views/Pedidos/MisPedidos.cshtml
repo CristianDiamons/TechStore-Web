@@ -1,0 +1,129 @@
+@model List<TechStoreMVC.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Mis pedidos";
+}
+
+<section class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Mis pedidos</h1>
+        <p class="text-muted">
+            Consulta tus compras realizadas en TechStore.
+        </p>
+    </div>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="text-center py-5">
+            <h3 class="mb-3">Todavía no tienes pedidos</h3>
+
+            <p class="text-muted">
+                Cuando realices una compra, aparecerá aquí.
+            </p>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               asp-fragment="productos"
+               class="btn btn-primary mt-2">
+                Explorar productos
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Número de pedido</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var pedido in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>#@pedido.IdPedido</strong>
+                            </td>
+
+                            <td>
+                                @pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                @pedido.Total.ToString("C", new System.Globalization.CultureInfo("es-MX"))
+                            </td>
+
+                            <td>
+                                @switch (pedido.Estado)
+                                {
+                                    case "Pendiente":
+                                        <span class="badge bg-warning text-dark">
+                                            Pendiente
+                                        </span>
+                                        break;
+
+                                    case "Procesando":
+                                        <span class="badge bg-info text-dark">
+                                            Procesando
+                                        </span>
+                                        break;
+
+                                    case "Enviado":
+                                        <span class="badge bg-primary">
+                                            Enviado
+                                        </span>
+                                        break;
+
+                                    case "Entregado":
+                                        <span class="badge bg-success">
+                                            Entregado
+                                        </span>
+                                        break;
+
+                                    case "Cancelado":
+                                        <span class="badge bg-danger">
+                                            Cancelado
+                                        </span>
+                                        break;
+
+                                    default:
+                                        <span class="badge bg-secondary">
+                                            @pedido.Estado
+                                        </span>
+                                        break;
+                                }
+                            </td>
+
+                            <td>
+                                <a asp-controller="Pedidos"
+                                   asp-action="Detalle"
+                                   asp-route-id="@pedido.IdPedido"
+                                   class="btn btn-outline-primary btn-sm">
+                                    Ver detalles
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Volver a la tienda
+        </a>
+    </div>
+
+</section>

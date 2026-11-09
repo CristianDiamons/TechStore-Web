@@ -1,0 +1,168 @@
+@model List<TechStoreMVC.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Administración de pedidos";
+}
+
+<section class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Administración de pedidos</h1>
+        <p class="text-muted">
+            Consulta las compras realizadas por los clientes y administra sus estados.
+        </p>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="text-center py-5">
+            <h3>No hay pedidos registrados</h3>
+            <p class="text-muted">
+                Cuando los clientes realicen compras, aparecerán aquí.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Correo</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado actual</th>
+                        <th>Actualizar estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var pedido in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>#@pedido.IdPedido</strong>
+                            </td>
+
+                            <td>@pedido.NombreCliente</td>
+
+                            <td>@pedido.CorreoCliente</td>
+
+                            <td>
+                                @pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                <strong>
+                                    @pedido.Total.ToString("C", new System.Globalization.CultureInfo("es-MX"))
+                                </strong>
+                            </td>
+
+                            <td>
+                                @switch (pedido.Estado)
+                                {
+                                    case "Pendiente":
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                        break;
+                                    case "Procesando":
+                                        <span class="badge bg-info text-dark">Procesando</span>
+                                        break;
+                                    case "Enviado":
+                                        <span class="badge bg-primary">Enviado</span>
+                                        break;
+                                    case "Entregado":
+                                        <span class="badge bg-success">Entregado</span>
+                                        break;
+                                    case "Cancelado":
+                                        <span class="badge bg-danger">Cancelado</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary">@pedido.Estado</span>
+                                        break;
+                                }
+                            </td>
+
+                            <td>
+                                <form asp-controller="AdminPedidos"
+                                      asp-action="ActualizarEstado"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="idPedido"
+                                           value="@pedido.IdPedido" />
+
+                                    <div class="d-flex gap-2">
+                                        <select name="estado"
+                                                class="form-select form-select-sm"
+                                                style="min-width: 130px;">
+
+                                            <option value="Pendiente"
+                                                    selected="@(pedido.Estado == "Pendiente")">
+                                                Pendiente
+                                            </option>
+
+                                            <option value="Procesando"
+                                                    selected="@(pedido.Estado == "Procesando")">
+                                                Procesando
+                                            </option>
+
+                                            <option value="Enviado"
+                                                    selected="@(pedido.Estado == "Enviado")">
+                                                Enviado
+                                            </option>
+
+                                            <option value="Entregado"
+                                                    selected="@(pedido.Estado == "Entregado")">
+                                                Entregado
+                                            </option>
+
+                                            <option value="Cancelado"
+                                                    selected="@(pedido.Estado == "Cancelado")">
+                                                Cancelado
+                                            </option>
+
+                                        </select>
+
+                                        <button type="submit"
+                                                class="btn btn-primary btn-sm">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Volver a la tienda
+        </a>
+    </div>
+
+</section>

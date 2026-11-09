@@ -1,0 +1,110 @@
+@model TechStoreMVC.Models.Pedido
+
+@{
+    ViewData["Title"] = "Detalle del pedido";
+    var cultura = new System.Globalization.CultureInfo("es-MX");
+}
+
+<section class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Detalle del pedido #@Model.IdPedido</h1>
+        <p class="text-muted">
+            Consulta los productos incluidos en tu compra.
+        </p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <strong>Fecha del pedido</strong>
+                    <p class="text-muted mb-0">
+                        @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Estado</strong>
+                    <p class="mb-0">
+                        @switch (Model.Estado)
+                        {
+                            case "Pendiente":
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                break;
+                            case "Procesando":
+                                <span class="badge bg-info text-dark">Procesando</span>
+                                break;
+                            case "Enviado":
+                                <span class="badge bg-primary">Enviado</span>
+                                break;
+                            case "Entregado":
+                                <span class="badge bg-success">Entregado</span>
+                                break;
+                            case "Cancelado":
+                                <span class="badge bg-danger">Cancelado</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">@Model.Estado</span>
+                                break;
+                        }
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Total del pedido</strong>
+                    <p class="fw-bold text-primary mb-0">
+                        @Model.Total.ToString("C", cultura)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-3">Productos comprados</h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.Detalles)
+                {
+                    <tr>
+                        <td>
+                            <strong>@detalle.NombreProducto</strong>
+                        </td>
+                        <td>@detalle.PrecioUnitario.ToString("C", cultura)</td>
+                        <td>@detalle.Cantidad</td>
+                        <td>
+                            @((detalle.PrecioUnitario * detalle.Cantidad).ToString("C", cultura))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                    <td class="fw-bold text-primary">
+                        @Model.Total.ToString("C", cultura)
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Pedidos"
+           asp-action="MisPedidos"
+           class="btn btn-outline-secondary">
+            Volver a mis pedidos
+        </a>
+    </div>
+
+</section>

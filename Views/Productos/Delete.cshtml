@@ -1,0 +1,67 @@
+@model TechStoreMVC.Models.Producto
+
+@{
+    ViewData["Title"] = "Eliminar producto";
+}
+
+<div class="admin-formulario-contenedor">
+    <div class="admin-formulario">
+        <div class="admin-formulario-encabezado">
+            <h1>Eliminar producto</h1>
+            <p>Confirma si deseas eliminar este producto del catálogo.</p>
+        </div>
+
+        <div class="admin-alerta-eliminar">
+            <strong>¡Atención!</strong>
+            <p>Esta acción es permanente y no se puede deshacer.</p>
+        </div>
+
+        <div class="admin-detalle-producto">
+            @if (!string.IsNullOrEmpty(Model.Imagen))
+            {
+                <img
+                    src="@Url.Content("~/images/" + Model.Imagen)"
+                    alt="@Model.Nombre"
+                    class="admin-detalle-imagen" />
+            }
+            else
+            {
+                <div class="admin-detalle-icono">
+                    @(string.IsNullOrEmpty(Model.Icono) ? "📦" : Model.Icono)
+                </div>
+            }
+
+            <div class="admin-detalle-informacion">
+                <span class="admin-detalle-etiqueta">ID del producto</span>
+                <p>@Model.IdProducto</p>
+
+                <span class="admin-detalle-etiqueta">Nombre</span>
+                <p>@Model.Nombre</p>
+
+                <span class="admin-detalle-etiqueta">Categoría</span>
+                <p>@Model.Categoria</p>
+
+                <span class="admin-detalle-etiqueta">Precio</span>
+                <p class="admin-precio">@Model.Precio.ToString("C2")</p>
+            </div>
+        </div>
+
+        <form asp-controller="Productos"
+              asp-action="Delete"
+              asp-route-id="@Model.IdProducto"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div class="admin-formulario-botones">
+                <button type="submit" class="admin-boton-eliminar">
+                    Sí, eliminar producto
+                </button>
+
+                <a asp-action="Index" class="admin-boton-cancelar">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

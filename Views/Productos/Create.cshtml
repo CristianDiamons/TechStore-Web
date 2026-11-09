@@ -1,0 +1,90 @@
+@model TechStoreMVC.Models.Producto
+
+@{
+    ViewData["Title"] = "Registrar producto";
+}
+
+<div class="admin-formulario-contenedor">
+
+    <div class="admin-formulario">
+
+        <div class="admin-formulario-encabezado">
+            <h1>Registrar producto</h1>
+            <p>Agrega un nuevo producto al catálogo de TechStore.</p>
+        </div>
+
+        <form asp-controller="Productos"
+              asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="mensaje-error"></div>
+
+            <div class="campo-admin">
+                <label asp-for="Nombre">Nombre del producto</label>
+                <input asp-for="Nombre"
+                       placeholder="Ej. Teclado mecánico RGB" />
+                <span asp-validation-for="Nombre"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Descripcion">Descripción</label>
+                <textarea asp-for="Descripcion"
+                          rows="4"
+                          placeholder="Describe las características del producto"></textarea>
+                <span asp-validation-for="Descripcion"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Precio">Precio (MXN)</label>
+                <input asp-for="Precio"
+                       type="number"
+                       step="0.01"
+                       min="0.01"
+                       placeholder="Ej. 1299.00" />
+                <span asp-validation-for="Precio"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="IdCategoria">Categoría</label>
+                <select asp-for="IdCategoria"
+                        asp-items="ViewBag.Categorias">
+                    <option value="">Selecciona una categoría</option>
+                </select>
+                <span asp-validation-for="IdCategoria"
+                      class="mensaje-error"></span>
+            </div>
+
+            <div class="campo-admin">
+                <label asp-for="Icono">Icono del producto</label>
+                <input asp-for="Icono"
+                       placeholder="Ej. ⌨️, 🖱️, 🎧" />
+                <span asp-validation-for="Icono"
+                      class="mensaje-error"></span>
+                <small>Escribe un emoji que represente al producto.</small>
+            </div>
+
+            <div class="admin-formulario-botones">
+                <button type="submit" class="admin-boton-principal">
+                    Guardar producto
+                </button>
+
+                <a asp-action="Index" class="admin-boton-cancelar">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
